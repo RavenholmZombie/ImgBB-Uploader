@@ -33,12 +33,13 @@
             lblVersion = new Label();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button1 = new Button();
+            label3 = new Label();
             label2 = new Label();
             label4 = new Label();
             tabPage2 = new TabPage();
             richTextBox1 = new RichTextBox();
-            label3 = new Label();
-            button1 = new Button();
+            button2 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -77,6 +78,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button2);
             tabPage1.Controls.Add(button1);
             tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(label2);
@@ -90,6 +92,26 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "About";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(113, 226);
+            button1.Name = "button1";
+            button1.Size = new Size(137, 23);
+            button1.TabIndex = 13;
+            button1.Text = "Mesabrook Website";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(43, 175);
+            label3.Name = "label3";
+            label3.Size = new Size(277, 30);
+            label3.TabIndex = 12;
+            label3.Text = "Developed by RavenholmZombie, a member of the\r\nMesabrook Development Team.";
+            label3.TextAlign = ContentAlignment.TopCenter;
             // 
             // label2
             // 
@@ -131,25 +153,15 @@
             richTextBox1.TabIndex = 0;
             richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
-            // label3
+            // button2
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(43, 175);
-            label3.Name = "label3";
-            label3.Size = new Size(277, 30);
-            label3.TabIndex = 12;
-            label3.Text = "Developed by RavenholmZombie, a member of the\r\nMesabrook Development Team.";
-            label3.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(113, 236);
-            button1.Name = "button1";
-            button1.Size = new Size(137, 23);
-            button1.TabIndex = 13;
-            button1.Text = "Mesabrook Website";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button2.Location = new Point(113, 255);
+            button2.Name = "button2";
+            button2.Size = new Size(137, 23);
+            button2.TabIndex = 14;
+            button2.Text = "GitHub Repo";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // frmAbout
             // 
@@ -185,5 +197,6 @@
         private RichTextBox richTextBox1;
         private Label label3;
         private Button button1;
+        private Button button2;
     }
 }

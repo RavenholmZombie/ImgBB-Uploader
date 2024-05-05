@@ -28,5 +28,11 @@ namespace ImgBB
             Process.Start("explorer.exe", "https://mesabrook.com");
             Close();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", "https://github.com/RavenholmZombie/ImgBB-Uploader");
+            Close();
+        }
     }
 }

@@ -31,3 +31,4 @@ C:\Users\chris\source\repos\ImgBB\ImgBB\bin\Debug\net6.0-windows7.0\Microsoft.We
 C:\Users\chris\source\repos\ImgBB\ImgBB\bin\Debug\net6.0-windows7.0\Microsoft.Web.WebView2.Wpf.dll
 C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Debug\net6.0-windows7.0\ImgBB.Properties.Resources.resources
 C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Debug\net6.0-windows7.0\ImgBB.frmAbout.resources
+C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Debug\net6.0-windows7.0\ImgBB.sourcelink.json
