@@ -1,0 +1,7 @@
+C:\Users\chris\Desktop\imgbb\ImgBB.exe
+C:\Users\chris\Desktop\imgbb\ImgBB.dll
+C:\Users\chris\Desktop\imgbb\ImgBB.deps.json
+C:\Users\chris\Desktop\imgbb\ImgBB.runtimeconfig.json
+C:\Users\chris\Desktop\imgbb\ImgBB.dll.config
+C:\Users\chris\Desktop\imgbb\ImgBB.pdb
+C:\Users\chris\Desktop\imgbb\Newtonsoft.Json.dll

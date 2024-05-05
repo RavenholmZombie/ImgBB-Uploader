@@ -1,0 +1,15 @@
+C:\Users\chris\Desktop\Junk\imgbb\ImgBB.exe
+C:\Users\chris\Desktop\Junk\imgbb\runtimes\win-x86\native\WebView2Loader.dll
+C:\Users\chris\Desktop\Junk\imgbb\runtimes\win-x64\native\WebView2Loader.dll
+C:\Users\chris\Desktop\Junk\imgbb\runtimes\win-arm64\native\WebView2Loader.dll
+C:\Users\chris\Desktop\Junk\imgbb\ImgBB.dll
+C:\Users\chris\Desktop\Junk\imgbb\ImgBB.deps.json
+C:\Users\chris\Desktop\Junk\imgbb\ImgBB.runtimeconfig.json
+C:\Users\chris\Desktop\Junk\imgbb\ImgBB.dll.config
+C:\Users\chris\Desktop\Junk\imgbb\ImgBB.pdb
+C:\Users\chris\Desktop\Junk\imgbb\Microsoft.Web.WebView2.Core.dll
+C:\Users\chris\Desktop\Junk\imgbb\Microsoft.Web.WebView2.WinForms.dll
+C:\Users\chris\Desktop\Junk\imgbb\Microsoft.Web.WebView2.Wpf.dll
+C:\Users\chris\Desktop\Junk\imgbb\Newtonsoft.Json.dll
+C:\Users\chris\Desktop\Junk\imgbb\System.Speech.dll
+C:\Users\chris\Desktop\Junk\imgbb\runtimes\win\lib\net6.0\System.Speech.dll
