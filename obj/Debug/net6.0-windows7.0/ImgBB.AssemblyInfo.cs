@@ -13,11 +13,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImgBB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.3")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.3+124ab4bee75990d524cb14ed512185740ce7b1fb")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.4")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImgBB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImgBB")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.3")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.4")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
