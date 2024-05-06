@@ -30,3 +30,5 @@ C:\Users\chris\source\repos\ImgBB\ImgBB\bin\Release\net6.0-windows7.0\runtimes\w
 C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Release\net6.0-windows7.0\Interop.SpeechLib.dll
 C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Release\net6.0-windows7.0\ImgBB.csproj.ResolveComReference.cache
 C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Release\net6.0-windows7.0\ImgBB.Properties.Resources.resources
+C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Release\net6.0-windows7.0\ImgBB.frmAbout.resources
+C:\Users\chris\source\repos\ImgBB\ImgBB\obj\Release\net6.0-windows7.0\ImgBB.sourcelink.json
