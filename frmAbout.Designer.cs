@@ -33,13 +33,13 @@
             lblVersion = new Label();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button2 = new Button();
             button1 = new Button();
             label3 = new Label();
             label2 = new Label();
             label4 = new Label();
             tabPage2 = new TabPage();
             richTextBox1 = new RichTextBox();
-            button2 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -57,10 +57,9 @@
             // 
             // lblVersion
             // 
-            lblVersion.AutoSize = true;
-            lblVersion.Location = new Point(141, 73);
+            lblVersion.Location = new Point(0, 73);
             lblVersion.Name = "lblVersion";
-            lblVersion.Size = new Size(72, 15);
+            lblVersion.Size = new Size(363, 15);
             lblVersion.TabIndex = 1;
             lblVersion.Text = "Version 0.0.0";
             lblVersion.TextAlign = ContentAlignment.TopCenter;
@@ -92,6 +91,16 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "About";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(113, 255);
+            button2.Name = "button2";
+            button2.Size = new Size(137, 23);
+            button2.TabIndex = 14;
+            button2.Text = "GitHub Repo";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button1
             // 
@@ -152,16 +161,6 @@
             richTextBox1.Size = new Size(357, 330);
             richTextBox1.TabIndex = 0;
             richTextBox1.Text = resources.GetString("richTextBox1.Text");
-            // 
-            // button2
-            // 
-            button2.Location = new Point(113, 255);
-            button2.Name = "button2";
-            button2.Size = new Size(137, 23);
-            button2.TabIndex = 14;
-            button2.Text = "GitHub Repo";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // frmAbout
             // 

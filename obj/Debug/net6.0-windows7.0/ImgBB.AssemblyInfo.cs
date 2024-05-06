@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImgBB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.3")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.3+a989a05bde541853f5c95dc2782f3a4e3f2a4d8c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.3+dd1e2eb983ce7c5eb6ce24cd9daabfadf2108bc3")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImgBB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImgBB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.3")]
