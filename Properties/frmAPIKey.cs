@@ -14,9 +14,11 @@ namespace ImgBB.Properties
 {
     public partial class frmAPIKey : Form
     {
-        public frmAPIKey()
+        private frmMain mainForm;
+        public frmAPIKey(frmMain mainForm)
         {
             InitializeComponent();
+            this.mainForm = mainForm;
         }
 
         private void frmAPIKey_FormClosing(object sender, FormClosingEventArgs e)
@@ -60,6 +62,9 @@ namespace ImgBB.Properties
             {
                 Properties.Settings.Default.apiKey = txtAPIKey.Text;
                 Properties.Settings.Default.Save();
+
+                mainForm.NotifyKeyUpdate(Properties.Settings.Default.apiKey);
+
                 Close();
             }
 

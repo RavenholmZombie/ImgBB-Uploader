@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VS\\ImgBB\\ImgBB\\ImgBB.csproj": {}
+    "C:\\Users\\chris\\source\\repos\\ImgBB\\ImgBB\\ImgBB.csproj": {}
   },
   "projects": {
-    "D:\\VS\\ImgBB\\ImgBB\\ImgBB.csproj": {
-      "version": "1.0.4",
+    "C:\\Users\\chris\\source\\repos\\ImgBB\\ImgBB\\ImgBB.csproj": {
+      "version": "1.0.5",
       "restore": {
-        "projectUniqueName": "D:\\VS\\ImgBB\\ImgBB\\ImgBB.csproj",
+        "projectUniqueName": "C:\\Users\\chris\\source\\repos\\ImgBB\\ImgBB\\ImgBB.csproj",
         "projectName": "ImgBB",
-        "projectPath": "D:\\VS\\ImgBB\\ImgBB\\ImgBB.csproj",
+        "projectPath": "C:\\Users\\chris\\source\\repos\\ImgBB\\ImgBB\\ImgBB.csproj",
         "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
-        "outputPath": "D:\\VS\\ImgBB\\ImgBB\\obj\\",
+        "outputPath": "C:\\Users\\chris\\source\\repos\\ImgBB\\ImgBB\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chris\\AppData\\Roaming\\NuGet\\NuGet.Config",

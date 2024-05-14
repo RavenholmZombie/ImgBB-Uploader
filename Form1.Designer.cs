@@ -39,7 +39,7 @@
             btnCopyURL = new Button();
             btnUpload = new Button();
             label4 = new Label();
-            button1 = new Button();
+            btnAPIKey = new Button();
             radioLocal = new RadioButton();
             radioRemote = new RadioButton();
             chkNarrator = new CheckBox();
@@ -48,17 +48,24 @@
             webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
-            toolStripSplitButton1 = new ToolStripSplitButton();
             toolStripSplitButton2 = new ToolStripSplitButton();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            aboutImgBBUploaderToolStripMenuItem = new ToolStripMenuItem();
+            factoryResetToolStripMenuItem = new ToolStripMenuItem();
+            logToolStripMenuItem = new ToolStripMenuItem();
+            clearToolStripMenuItem = new ToolStripMenuItem();
+            saveAsToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView21).BeginInit();
             statusStrip1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(12, 31);
             label1.Name = "label1";
             label1.Size = new Size(147, 15);
             label1.TabIndex = 0;
@@ -66,7 +73,7 @@
             // 
             // txtFilePath
             // 
-            txtFilePath.Location = new Point(12, 27);
+            txtFilePath.Location = new Point(12, 49);
             txtFilePath.Name = "txtFilePath";
             txtFilePath.ReadOnly = true;
             txtFilePath.Size = new Size(377, 23);
@@ -75,7 +82,7 @@
             // 
             // btnBrowse
             // 
-            btnBrowse.Location = new Point(395, 26);
+            btnBrowse.Location = new Point(395, 48);
             btnBrowse.Name = "btnBrowse";
             btnBrowse.Size = new Size(75, 23);
             btnBrowse.TabIndex = 2;
@@ -86,15 +93,15 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 62);
+            label2.Location = new Point(12, 84);
             label2.Name = "label2";
-            label2.Size = new Size(30, 15);
+            label2.Size = new Size(53, 15);
             label2.TabIndex = 3;
-            label2.Text = "Log:";
+            label2.Text = "Console:";
             // 
             // rtbLog
             // 
-            rtbLog.Location = new Point(12, 80);
+            rtbLog.Location = new Point(12, 102);
             rtbLog.Name = "rtbLog";
             rtbLog.ReadOnly = true;
             rtbLog.Size = new Size(455, 73);
@@ -105,7 +112,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 165);
+            label3.Location = new Point(12, 187);
             label3.Name = "label3";
             label3.Size = new Size(65, 15);
             label3.TabIndex = 5;
@@ -113,7 +120,7 @@
             // 
             // txtURL
             // 
-            txtURL.Location = new Point(12, 183);
+            txtURL.Location = new Point(12, 205);
             txtURL.Name = "txtURL";
             txtURL.ReadOnly = true;
             txtURL.Size = new Size(377, 23);
@@ -123,7 +130,7 @@
             // btnCopyURL
             // 
             btnCopyURL.Enabled = false;
-            btnCopyURL.Location = new Point(395, 182);
+            btnCopyURL.Location = new Point(395, 204);
             btnCopyURL.Name = "btnCopyURL";
             btnCopyURL.Size = new Size(75, 23);
             btnCopyURL.TabIndex = 7;
@@ -134,7 +141,7 @@
             // btnUpload
             // 
             btnUpload.Enabled = false;
-            btnUpload.Location = new Point(242, 228);
+            btnUpload.Location = new Point(242, 250);
             btnUpload.Name = "btnUpload";
             btnUpload.Size = new Size(108, 23);
             btnUpload.TabIndex = 8;
@@ -146,27 +153,27 @@
             // 
             label4.AutoSize = true;
             label4.ForeColor = Color.Red;
-            label4.Location = new Point(79, 260);
+            label4.Location = new Point(79, 282);
             label4.Name = "label4";
             label4.Size = new Size(321, 15);
             label4.TabIndex = 9;
             label4.Text = "This program is not owned by, or affiliated with ImgBB.com";
             // 
-            // button1
+            // btnAPIKey
             // 
-            button1.Location = new Point(128, 228);
-            button1.Name = "button1";
-            button1.Size = new Size(108, 23);
-            button1.TabIndex = 10;
-            button1.Text = "Change API Key";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click_1;
+            btnAPIKey.Location = new Point(128, 250);
+            btnAPIKey.Name = "btnAPIKey";
+            btnAPIKey.Size = new Size(108, 23);
+            btnAPIKey.TabIndex = 10;
+            btnAPIKey.Text = "Change API Key";
+            btnAPIKey.UseVisualStyleBackColor = true;
+            btnAPIKey.Click += button1_Click_1;
             // 
             // radioLocal
             // 
             radioLocal.AutoSize = true;
             radioLocal.Checked = true;
-            radioLocal.Location = new Point(165, 7);
+            radioLocal.Location = new Point(165, 29);
             radioLocal.Name = "radioLocal";
             radioLocal.Size = new Size(110, 19);
             radioLocal.TabIndex = 11;
@@ -178,7 +185,7 @@
             // radioRemote
             // 
             radioRemote.AutoSize = true;
-            radioRemote.Location = new Point(281, 7);
+            radioRemote.Location = new Point(281, 29);
             radioRemote.Name = "radioRemote";
             radioRemote.Size = new Size(116, 19);
             radioRemote.TabIndex = 12;
@@ -189,7 +196,7 @@
             // chkNarrator
             // 
             chkNarrator.AutoSize = true;
-            chkNarrator.Location = new Point(12, 231);
+            chkNarrator.Location = new Point(12, 253);
             chkNarrator.Name = "chkNarrator";
             chkNarrator.Size = new Size(70, 19);
             chkNarrator.TabIndex = 13;
@@ -201,7 +208,7 @@
             // 
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(webView21);
-            groupBox1.Location = new Point(476, 9);
+            groupBox1.Location = new Point(476, 31);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(333, 266);
             groupBox1.TabIndex = 14;
@@ -235,8 +242,8 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripSplitButton2, toolStripSplitButton1 });
-            statusStrip1.Location = new Point(0, 287);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripSplitButton2 });
+            statusStrip1.Location = new Point(0, 305);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(821, 22);
             statusStrip1.TabIndex = 15;
@@ -248,18 +255,6 @@
             toolStripStatusLabel1.Size = new Size(118, 17);
             toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
-            // toolStripSplitButton1
-            // 
-            toolStripSplitButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripSplitButton1.DropDownButtonWidth = 0;
-            toolStripSplitButton1.Image = Properties.Resources.Oxygen_Icons_org_Oxygen_Actions_edit_redo_256;
-            toolStripSplitButton1.ImageTransparentColor = Color.Magenta;
-            toolStripSplitButton1.Name = "toolStripSplitButton1";
-            toolStripSplitButton1.Size = new Size(45, 20);
-            toolStripSplitButton1.Text = "About";
-            toolStripSplitButton1.TextAlign = ContentAlignment.MiddleRight;
-            toolStripSplitButton1.ButtonClick += toolStripSplitButton1_ButtonClick;
-            // 
             // toolStripSplitButton2
             // 
             toolStripSplitButton2.DropDownButtonWidth = 0;
@@ -270,17 +265,69 @@
             toolStripSplitButton2.Text = "Check for Updates";
             toolStripSplitButton2.ButtonClick += toolStripSplitButton2_ButtonClick;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, logToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(821, 24);
+            menuStrip1.TabIndex = 16;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutImgBBUploaderToolStripMenuItem, factoryResetToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // aboutImgBBUploaderToolStripMenuItem
+            // 
+            aboutImgBBUploaderToolStripMenuItem.Name = "aboutImgBBUploaderToolStripMenuItem";
+            aboutImgBBUploaderToolStripMenuItem.Size = new Size(196, 22);
+            aboutImgBBUploaderToolStripMenuItem.Text = "About ImgBB Uploader";
+            aboutImgBBUploaderToolStripMenuItem.Click += aboutImgBBUploaderToolStripMenuItem_Click;
+            // 
+            // factoryResetToolStripMenuItem
+            // 
+            factoryResetToolStripMenuItem.Name = "factoryResetToolStripMenuItem";
+            factoryResetToolStripMenuItem.Size = new Size(196, 22);
+            factoryResetToolStripMenuItem.Text = "Factory Reset";
+            factoryResetToolStripMenuItem.Click += factoryResetToolStripMenuItem_Click;
+            // 
+            // logToolStripMenuItem
+            // 
+            logToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clearToolStripMenuItem, saveAsToolStripMenuItem });
+            logToolStripMenuItem.Name = "logToolStripMenuItem";
+            logToolStripMenuItem.Size = new Size(62, 20);
+            logToolStripMenuItem.Text = "Console";
+            // 
+            // clearToolStripMenuItem
+            // 
+            clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            clearToolStripMenuItem.Size = new Size(114, 22);
+            clearToolStripMenuItem.Text = "Clear";
+            clearToolStripMenuItem.Click += clearToolStripMenuItem_Click;
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            saveAsToolStripMenuItem.Size = new Size(114, 22);
+            saveAsToolStripMenuItem.Text = "Save As";
+            saveAsToolStripMenuItem.Click += saveAsToolStripMenuItem_Click;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(821, 309);
+            ClientSize = new Size(821, 327);
             Controls.Add(statusStrip1);
+            Controls.Add(menuStrip1);
             Controls.Add(groupBox1);
             Controls.Add(chkNarrator);
             Controls.Add(radioRemote);
             Controls.Add(radioLocal);
-            Controls.Add(button1);
+            Controls.Add(btnAPIKey);
             Controls.Add(label4);
             Controls.Add(btnUpload);
             Controls.Add(btnCopyURL);
@@ -293,6 +340,7 @@
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
             MaximizeBox = false;
             Name = "frmMain";
             StartPosition = FormStartPosition.CenterScreen;
@@ -303,6 +351,8 @@
             ((System.ComponentModel.ISupportInitialize)webView21).EndInit();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -319,7 +369,7 @@
         private Button btnCopyURL;
         private Button btnUpload;
         private Label label4;
-        private Button button1;
+        private Button btnAPIKey;
         private RadioButton radioLocal;
         private RadioButton radioRemote;
         private CheckBox chkNarrator;
@@ -328,7 +378,13 @@
         private Label label5;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel1;
-        private ToolStripSplitButton toolStripSplitButton1;
         private ToolStripSplitButton toolStripSplitButton2;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem logToolStripMenuItem;
+        private ToolStripMenuItem clearToolStripMenuItem;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem aboutImgBBUploaderToolStripMenuItem;
+        private ToolStripMenuItem factoryResetToolStripMenuItem;
     }
 }

@@ -18,15 +18,36 @@ namespace ImgBB
             webView21.EnsureCoreWebView2Async(null);
         }
 
+        private string APIKeyCipher(string key)
+        {
+            try
+            {
+                return key = new string('X', key.Length - 4) + key.Substring(key.Length - 4);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return null;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             CheckForUpdateAsync("https://raw.githubusercontent.com/RavenholmZombie/RavenholmZombie/main/imgbb.txt", Application.ProductVersion);
-            //Properties.Settings.Default.Reset();
-            //Properties.Settings.Default.Save();
-            //Application.Exit();
+
+            bool runningInVisualStudio = IsRunningInVisualStudio();
+            if (!runningInVisualStudio)
+            {
+                factoryResetToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                factoryResetToolStripMenuItem.Visible = true;
+            }
+
             if (String.IsNullOrEmpty(Properties.Settings.Default.apiKey))
             {
-                frmAPIKey frm = new frmAPIKey();
+                frmAPIKey frm = new frmAPIKey(this);
                 frm.ShowDialog();
             }
 
@@ -44,26 +65,7 @@ namespace ImgBB
                 label5.BringToFront();
             }
 
-            String fullAPIKey = Properties.Settings.Default.apiKey;
-            String cipheredKey;
-
-            try
-            {
-                if (fullAPIKey != null)
-                {
-                    cipheredKey = new string('X', fullAPIKey.Length - 4) + fullAPIKey.Substring(fullAPIKey.Length - 4);
-                }
-                else
-                {
-                    cipheredKey = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                cipheredKey = null;
-            }
-
-            addToLog("Found API Key: " + cipheredKey);
+            addToLog("Found API Key: " + APIKeyCipher(Properties.Settings.Default.apiKey));
             Text = "ImgBB Uploader - " + ProductVersion;
 
             chkNarrator.Checked = Properties.Settings.Default.useNarrator;
@@ -73,6 +75,9 @@ namespace ImgBB
         {
             if (!String.IsNullOrEmpty(txtFilePath.Text))
             {
+                btnUpload.Enabled = false;
+                btnAPIKey.Enabled = false;
+                ControlBox = false;
                 addToLog("Queueing upload...");
                 if (radioRemote.Checked)
                 {
@@ -110,12 +115,18 @@ namespace ImgBB
                                     generatePreview(imageUrl);
                                     groupBox1.Text = "Preview (Live on ImgBB)";
                                     txtFilePath.Clear();
+                                    btnUpload.Enabled = true;
+                                    btnAPIKey.Enabled = true;
+                                    ControlBox = true;
                                 }
                                 else
                                 {
                                     addToLog("Unable to upload.");
                                     NarrateAsync("Unable to upload.");
                                     SystemSounds.Hand.Play();
+                                    btnUpload.Enabled = true;
+                                    btnAPIKey.Enabled = true;
+                                    ControlBox = true;
                                 }
                             }
                         }
@@ -125,6 +136,9 @@ namespace ImgBB
                         addToLog("A fatal error occurred: " + ex.Message);
                         SystemSounds.Hand.Play();
                         NarrateAsync("A fatal error occurred");
+                        btnUpload.Enabled = true;
+                        btnAPIKey.Enabled = true;
+                        ControlBox = true;
                     }
                 }
             }
@@ -133,6 +147,10 @@ namespace ImgBB
                 addToLog("Unable to process upload request at this time.");
                 SystemSounds.Hand.Play();
                 NarrateAsync("Unable to process upload request at this time.");
+                btnUpload.Enabled = true;
+                btnAPIKey.Enabled = true;
+                ControlBox = true;
+
             }
         }
 
@@ -169,7 +187,7 @@ namespace ImgBB
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            frmAPIKey frm = new frmAPIKey();
+            frmAPIKey frm = new frmAPIKey(this);
             frm.ShowDialog(this);
         }
 
@@ -225,6 +243,9 @@ namespace ImgBB
         {
             string fileExtension = Path.GetExtension(imageUrl);
             string fileName = Path.GetFileName(imageUrl);
+            btnUpload.Enabled = false;
+            btnAPIKey.Enabled = false;
+            ControlBox = false;
             if (string.IsNullOrEmpty(fileExtension))
             {
                 addToLog("Alert: Potentially invalid URL. Some URLs that do not provide direct file access may still upload to ImgBB anyways. Check the URL if it fails to upload.");
@@ -262,6 +283,9 @@ namespace ImgBB
                     txtFilePath.Clear();
                     generatePreview(uploadedImageUrl);
                     groupBox1.Text = "Preview (Live on ImgBB)";
+                    btnUpload.Enabled = true;
+                    btnAPIKey.Enabled = true;
+                    ControlBox = true;
                     return uploadedImageUrl;
                 }
                 else
@@ -269,6 +293,9 @@ namespace ImgBB
                     addToLog($"Failed to upload file. Status code: {response.StatusCode}");
                     NarrateAsync("Remote Upload Failed.");
                     SystemSounds.Hand.Play();
+                    btnUpload.Enabled = true;
+                    btnAPIKey.Enabled = true;
+                    ControlBox = true;
                     return null;
                 }
             }
@@ -316,6 +343,12 @@ namespace ImgBB
             }
         }
 
+        public void NotifyKeyUpdate(string key)
+        {
+            addToLog("API Key change detected.");
+            addToLog($"New Key: {APIKeyCipher(key)}");
+        }
+
         public async Task CheckForUpdateAsync(string remoteUrl, string currentVersion)
         {
             toolStripStatusLabel1.Text = "Contacting Update Server...";
@@ -332,9 +365,14 @@ namespace ImgBB
                         // Current version is outdated.
                         if (MessageBox.Show($"An updated version of ImgBB Uploader is available. You must update before you can continue using this program. \n\nCurrent Version: {Application.ProductVersion} \nLatest Version: {latestVersion} \n\nPress OK to download the latest version of ImgBB Uploader.", "Update Required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation) == DialogResult.OK)
                         {
-                            Process.Start("explorer.exe", "https://shorturl.at/rvXY3");
+                            Process.Start("https://github.com/RavenholmZombie/ImgBB-Uploader/releases/tag/" + latestVersion);
                             Application.Exit();
                         }
+                    }
+                    else if (IsVersionAhead(latestVersion, currentVersion))
+                    {
+                        toolStripStatusLabel1.Text = $"Beta Version Detected (Current: {currentVersion} > Prod: {latestVersion})";
+                        return;
                     }
                     else
                     {
@@ -369,6 +407,24 @@ namespace ImgBB
             return false;
         }
 
+        private static bool IsVersionAhead(string versionA, string versionB)
+        {
+            string[] partsA = versionA.Split('.');
+            string[] partsB = versionB.Split('.');
+
+            for (int i = 0; i < Math.Min(partsA.Length, partsB.Length); i++)
+            {
+                int partA = int.Parse(partsA[i]);
+                int partB = int.Parse(partsB[i]);
+
+                if (partA < partB)
+                    return true;
+                else if (partA > partB)
+                    return false;
+            }
+            return false;
+        }
+
         private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
         {
             frmAbout frm = new frmAbout();
@@ -383,6 +439,61 @@ namespace ImgBB
         private void toolStripSplitButton2_ButtonClick(object sender, EventArgs e)
         {
             CheckForUpdateAsync("https://raw.githubusercontent.com/RavenholmZombie/RavenholmZombie/main/imgbb.txt", Application.ProductVersion);
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbLog.Clear();
+        }
+
+        private void aboutImgBBUploaderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAbout frm = new frmAbout();
+            frm.ShowDialog();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Save Console Output to Text File";
+            sfd.Filter = "Plain Text File|*.txt";
+            sfd.FileName = $"ImgBB-Uploader-Log-{timestamp}";
+
+            DialogResult result = sfd.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                File.WriteAllText(sfd.FileName, rtbLog.Text);
+                addToLog($"Console Log Saved - {DateTime.Now}");
+                addToLog(sfd.FileName);
+            }
+        }
+        static bool IsRunningInVisualStudio()
+        {
+            // Check environment variable
+            string visualStudioDir = Environment.GetEnvironmentVariable("VisualStudioDir");
+            if (visualStudioDir != null)
+            {
+                return true;
+            }
+
+            // Check loaded assemblies
+            foreach (ProcessModule processModule in Process.GetCurrentProcess().Modules)
+            {
+                if (processModule.ModuleName.StartsWith("VisualStudio"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void factoryResetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Save();
+            Application.Exit();
         }
     }
 }
