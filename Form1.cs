@@ -81,7 +81,7 @@ namespace ImgBB
                 addToLog("Queueing upload...");
                 if (radioRemote.Checked)
                 {
-                    UploadImageToImgBB(txtFilePath.Text);
+                    UploadRemoteImage(txtFilePath.Text);
                 }
                 else
                 {
@@ -239,7 +239,7 @@ namespace ImgBB
             }
         }
 
-        private async Task<string> UploadImageToImgBB(string imageUrl)
+        private async Task<string> UploadRemoteImage(string imageUrl)
         {
             string fileExtension = Path.GetExtension(imageUrl);
             string fileName = Path.GetFileName(imageUrl);
@@ -254,8 +254,9 @@ namespace ImgBB
             using (HttpClient client = new HttpClient())
             {
                 String fullAPIKey = Properties.Settings.Default.apiKey;
-                String cipheredKey = new string('X', fullAPIKey.Length - 4) + fullAPIKey.Substring(fullAPIKey.Length - 4);
+                String cipheredKey = APIKeyCipher(fullAPIKey);
 
+                addToLog($"Remote URL: {imageUrl}");
                 addToLog("Starting upload using API key " + cipheredKey);
 
                 byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
@@ -292,6 +293,7 @@ namespace ImgBB
                 {
                     addToLog($"Failed to upload file. Status code: {response.StatusCode}");
                     NarrateAsync("Remote Upload Failed.");
+                    label5.Text = "Failed to generate preview";
                     SystemSounds.Hand.Play();
                     btnUpload.Enabled = true;
                     btnAPIKey.Enabled = true;
@@ -306,13 +308,20 @@ namespace ImgBB
             rtbLog.AppendText("\n" + info);
         }
 
-        private static async Task NarrateAsync(string text)
+        private async Task NarrateAsync(string text)
         {
             if (Properties.Settings.Default.useNarrator)
             {
-                using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                try
                 {
-                    await Task.Run(() => synth.Speak(text)); // Running speech synthesis on a separate thread
+                    using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                    {
+                        await Task.Run(() => synth.Speak(text));
+                    }
+                }
+                catch(Exception ex)
+                {
+                    addToLog($"Unable to reach Narrator. {ex.Message}");
                 }
             }
         }
@@ -324,7 +333,12 @@ namespace ImgBB
 
             if (chkNarrator.Checked)
             {
-                NarrateAsync("Narrator on");
+                NarrateAsync($"Hello {Environment.UserName}, Welcome to ImgBB Uploader version {Application.ProductVersion}. Narrator is enabled.");
+                addToLog("Narrator on");
+            }
+            else
+            {
+                addToLog("Narrator off");
             }
         }
 
@@ -347,6 +361,7 @@ namespace ImgBB
         {
             addToLog("API Key change detected.");
             addToLog($"New Key: {APIKeyCipher(key)}");
+            NarrateAsync("API key change detected.");
         }
 
         public async Task CheckForUpdateAsync(string remoteUrl, string currentVersion)
@@ -423,12 +438,6 @@ namespace ImgBB
                     return false;
             }
             return false;
-        }
-
-        private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
-        {
-            frmAbout frm = new frmAbout();
-            frm.ShowDialog();
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)

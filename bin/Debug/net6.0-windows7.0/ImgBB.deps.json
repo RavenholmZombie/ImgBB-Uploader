@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "ImgBB/1.0.5": {
+      "ImgBB/1.0.6": {
         "dependencies": {
           "Microsoft.Web.WebView2": "1.0.2478.35",
           "Newtonsoft.Json": "13.0.3",
@@ -76,7 +76,7 @@
     }
   },
   "libraries": {
-    "ImgBB/1.0.5": {
+    "ImgBB/1.0.6": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
