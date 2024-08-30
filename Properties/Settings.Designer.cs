@@ -58,5 +58,17 @@ namespace ImgBB.Properties {
                 this["uiState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("imgbb")]
+        public string provider {
+            get {
+                return ((string)(this["provider"]));
+            }
+            set {
+                this["provider"] = value;
+            }
+        }
     }
 }

@@ -31,7 +31,14 @@ namespace ImgBB.Properties
 
         private void btnGetKey_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", "https://api.imgbb.com/");
+            if(Properties.Settings.Default.provider == "imgbb")
+            {
+                Process.Start("explorer.exe", "https://api.imgbb.com/");
+            }
+            else
+            {
+                Process.Start("explorer.exe", "https://freeimage.host/page/api");
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -79,6 +86,15 @@ namespace ImgBB.Properties
             if (!String.IsNullOrEmpty(Properties.Settings.Default.apiKey))
             {
                 txtAPIKey.Text = Properties.Settings.Default.apiKey;
+            }
+
+            if(Properties.Settings.Default.provider != "imgbb")
+            {
+                label1.Text = "To use this program, please provide your Freeimage.host \nAPI Key";
+            }
+            else
+            {
+                label1.Text = "To use this program, please provide your ImgBB API Key";
             }
         }
 

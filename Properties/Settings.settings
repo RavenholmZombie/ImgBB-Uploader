@@ -11,5 +11,8 @@
     <Setting Name="uiState" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="provider" Type="System.String" Scope="User">
+      <Value Profile="(Default)">imgbb</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

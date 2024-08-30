@@ -1,7 +1,9 @@
 using ImgBB.Properties;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Media;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
@@ -35,6 +37,19 @@ namespace ImgBB
         {
             CheckForUpdateAsync("https://raw.githubusercontent.com/RavenholmZombie/RavenholmZombie/main/imgbb.txt", Application.ProductVersion);
 
+            if (Properties.Settings.Default.provider == "imgbb")
+            {
+                imgBBToolStripMenuItem.Checked = true;
+                freeimagehostToolStripMenuItem.Checked = false;
+                Text = "ImgBB Uploader - " + ProductVersion;
+            }
+            else
+            {
+                imgBBToolStripMenuItem.Checked = false;
+                freeimagehostToolStripMenuItem.Checked = true;
+                Text = "Freeimage.host Uploader - " + ProductVersion;
+            }
+
             bool runningInVisualStudio = IsRunningInVisualStudio();
             if (!runningInVisualStudio)
             {
@@ -66,9 +81,6 @@ namespace ImgBB
             }
 
             addToLog("Found API Key: " + APIKeyCipher(Properties.Settings.Default.apiKey));
-            Text = "ImgBB Uploader - " + ProductVersion;
-
-            chkNarrator.Checked = Properties.Settings.Default.useNarrator;
         }
 
         private async void button3_Click(object sender, EventArgs e)
@@ -87,43 +99,91 @@ namespace ImgBB
                 {
                     try
                     {
-                        string apiKey = Properties.Settings.Default.apiKey;
-                        string imagePath = txtFilePath.Text;
-                        string apiUrl = "https://api.imgbb.com/1/upload";
-
-                        using (var client = new HttpClient())
+                        if (imgBBToolStripMenuItem.Checked)
                         {
-                            using (var formData = new MultipartFormDataContent())
+                            string apiKey = Properties.Settings.Default.apiKey;
+                            string imagePath = txtFilePath.Text;
+                            string apiUrl = "https://api.imgbb.com/1/upload";
+
+                            using (var client = new HttpClient())
                             {
-                                formData.Add(new StringContent(apiKey), "key");
-                                byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
-                                formData.Add(new ByteArrayContent(imageBytes), "image", ofd.FileName + ofd.AddExtension);
-                                var response = await client.PostAsync(apiUrl, formData);
-                                addToLog("Starting upload...");
-
-
-                                if (response.IsSuccessStatusCode)
+                                using (var formData = new MultipartFormDataContent())
                                 {
-                                    var responseContent = await response.Content.ReadAsStringAsync();
-                                    dynamic jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
-                                    string imageUrl = jsonResponse.data.url;
-                                    txtURL.Text = imageUrl;
-                                    addToLog($"Server returned HTTP {response.StatusCode} ({(int)response.StatusCode})");
-                                    addToLog("Upload successful! Server returned URL " + imageUrl);
-                                    NarrateAsync("Image Upload Successful.");
-                                    SystemSounds.Exclamation.Play();
-                                    generatePreview(imageUrl);
-                                    groupBox1.Text = "Preview (Live on ImgBB)";
-                                    txtFilePath.Clear();
-                                    btnUpload.Enabled = true;
-                                    btnAPIKey.Enabled = true;
-                                    ControlBox = true;
+                                    formData.Add(new StringContent(apiKey), "key");
+                                    byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+                                    formData.Add(new ByteArrayContent(imageBytes), "image", ofd.FileName + ofd.AddExtension);
+                                    var response = await client.PostAsync(apiUrl, formData);
+                                    addToLog("Starting upload...");
+
+
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        var responseContent = await response.Content.ReadAsStringAsync();
+                                        dynamic jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
+                                        string imageUrl = jsonResponse.data.url;
+                                        txtURL.Text = imageUrl;
+                                        addToLog($"Server returned HTTP {response.StatusCode} ({(int)response.StatusCode})");
+                                        addToLog("Upload successful! Server returned URL " + imageUrl);
+                                        NarrateAsync("Image Upload Successful.");
+                                        SystemSounds.Exclamation.Play();
+                                        generatePreview(imageUrl);
+                                        groupBox1.Text = "Preview (Live on ImgBB)";
+                                        txtFilePath.Clear();
+                                        btnUpload.Enabled = true;
+                                        btnAPIKey.Enabled = true;
+                                        ControlBox = true;
+                                    }
+                                    else
+                                    {
+                                        addToLog("Unable to upload.");
+                                        NarrateAsync("Unable to upload.");
+                                        SystemSounds.Hand.Play();
+                                        btnUpload.Enabled = true;
+                                        btnAPIKey.Enabled = true;
+                                        ControlBox = true;
+                                    }
                                 }
-                                else
+                            }
+                        }
+                        else
+                        {
+                            using (var httpClient = new HttpClient())
+                            {
+                                using (var form = new MultipartFormDataContent())
                                 {
-                                    addToLog("Unable to upload.");
-                                    NarrateAsync("Unable to upload.");
-                                    SystemSounds.Hand.Play();
+                                    addToLog("Uploading to Freeimage.host using provided API key.");
+                                    form.Add(new StringContent(Properties.Settings.Default.apiKey), "key");
+                                    var fileStream = new FileStream(txtFilePath.Text, FileMode.Open, FileAccess.Read);
+                                    var fileContent = new StreamContent(fileStream);
+                                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/" + ofd.AddExtension);
+                                    form.Add(fileContent, "source", Path.GetFileName(txtFilePath.Text));
+
+                                    var response = await httpClient.PostAsync("https://freeimage.host/api/1/upload", form);
+
+                                    if(response.IsSuccessStatusCode)
+                                    {
+                                        var responseContent = await response.Content.ReadAsStringAsync();
+                                        var jsonResponse = JObject.Parse(responseContent);
+                                        var imageUrl = jsonResponse["image"]["url"].ToString();
+
+                                        addToLog($"Server returned HTTP {response.StatusCode} ({(int)response.StatusCode})");
+                                        addToLog("Upload successful! Server returned URL " + imageUrl);
+                                        NarrateAsync("Image Upload Successful.");
+                                        SystemSounds.Exclamation.Play();
+                                        generatePreview(imageUrl);
+                                        groupBox1.Text = "Preview (Live on Freeimage.host)";
+
+                                        txtURL.Text = imageUrl;
+                                    }
+                                    else
+                                    {
+                                        addToLog($"Server returned HTTP {response.StatusCode} ({(int)response.StatusCode})");
+                                        addToLog("Image failed to upload to Freeimage.host");
+                                        btnUpload.Enabled = true;
+                                        btnAPIKey.Enabled = true;
+                                        ControlBox = true;
+                                    }
+
                                     btnUpload.Enabled = true;
                                     btnAPIKey.Enabled = true;
                                     ControlBox = true;
@@ -151,6 +211,29 @@ namespace ImgBB
                 btnAPIKey.Enabled = true;
                 ControlBox = true;
 
+            }
+        }
+
+        private static async Task<string> UploadImageAsync(string imagePath)
+        {
+            using (var client = new HttpClient())
+            using (var form = new MultipartFormDataContent())
+            {
+                form.Add(new StringContent(Properties.Settings.Default.apiKey), "key");
+                var imageContent = new ByteArrayContent(File.ReadAllBytes(imagePath));
+                imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                form.Add(imageContent, "source", Path.GetFileName(imagePath));
+
+                HttpResponseMessage response = await client.PostAsync(Properties.Settings.Default.apiKey, form);
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                // Parse the JSON response to extract the image URL
+                var jsonResponse = JObject.Parse(responseBody);
+                string imageUrl = jsonResponse["image"]["url"].ToString();
+
+                return imageUrl;
             }
         }
 
@@ -248,56 +331,118 @@ namespace ImgBB
             ControlBox = false;
             if (string.IsNullOrEmpty(fileExtension))
             {
-                addToLog("Alert: Potentially invalid URL. Some URLs that do not provide direct file access may still upload to ImgBB anyways. Check the URL if it fails to upload.");
+                addToLog("Alert: Potentially invalid URL. Some URLs that do not provide direct file access may still upload to your selected host anyways. Check the URL if it fails to upload.");
             }
 
-            using (HttpClient client = new HttpClient())
+            if(Properties.Settings.Default.provider == "imgbb")
             {
-                String fullAPIKey = Properties.Settings.Default.apiKey;
-                String cipheredKey = APIKeyCipher(fullAPIKey);
-
-                addToLog($"Remote URL: {imageUrl}");
-                addToLog("Starting upload using API key " + cipheredKey);
-
-                byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
-
-                var content = new MultipartFormDataContent();
-                content.Add(new ByteArrayContent(imageBytes), "image", fileName + fileExtension);
-
-                HttpResponseMessage response = await client.PostAsync($"https://api.imgbb.com/1/upload?key={Properties.Settings.Default.apiKey}", content);
-
-                if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
                 {
-                    // Read the response content
-                    string responseContent = await response.Content.ReadAsStringAsync();
+                    String fullAPIKey = Properties.Settings.Default.apiKey;
+                    String cipheredKey = APIKeyCipher(fullAPIKey);
 
-                    // Deserialize JSON response
-                    dynamic jsonResponse = JsonConvert.DeserializeObject(responseContent);
+                    addToLog($"Remote URL: {imageUrl}");
+                    addToLog("Starting upload using API key " + cipheredKey);
 
-                    // Extract URL of the uploaded image
-                    string uploadedImageUrl = jsonResponse.data.url;
-                    txtURL.Text = uploadedImageUrl;
-                    addToLog($"Server returned HTTP {response.StatusCode} ({(int)response.StatusCode})");
-                    addToLog("Remote Upload Successful. New URL: " + uploadedImageUrl);
-                    NarrateAsync("Remote Upload Successful.");
-                    SystemSounds.Exclamation.Play();
-                    txtFilePath.Clear();
-                    generatePreview(uploadedImageUrl);
-                    groupBox1.Text = "Preview (Live on ImgBB)";
-                    btnUpload.Enabled = true;
-                    btnAPIKey.Enabled = true;
-                    ControlBox = true;
-                    return uploadedImageUrl;
+                    byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
+
+                    var content = new MultipartFormDataContent();
+                    content.Add(new ByteArrayContent(imageBytes), "image", fileName + fileExtension);
+
+                    HttpResponseMessage response = await client.PostAsync($"https://api.imgbb.com/1/upload?key={Properties.Settings.Default.apiKey}", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Read the response content
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserialize JSON response
+                        dynamic jsonResponse = JsonConvert.DeserializeObject(responseContent);
+
+                        // Extract URL of the uploaded image
+                        string uploadedImageUrl = jsonResponse.data.url;
+                        txtURL.Text = uploadedImageUrl;
+                        addToLog($"Server returned HTTP {response.StatusCode} ({(int)response.StatusCode})");
+                        addToLog("Remote Upload Successful. New URL: " + uploadedImageUrl);
+                        NarrateAsync("Remote Upload Successful.");
+                        SystemSounds.Exclamation.Play();
+                        txtFilePath.Clear();
+                        generatePreview(uploadedImageUrl);
+                        groupBox1.Text = "Preview (Live on ImgBB)";
+                        btnUpload.Enabled = true;
+                        btnAPIKey.Enabled = true;
+                        ControlBox = true;
+                        return uploadedImageUrl;
+                    }
+                    else
+                    {
+                        addToLog($"Failed to upload file. Status code: {response.StatusCode}");
+                        NarrateAsync("Remote Upload Failed.");
+                        label5.Text = "Failed to generate preview";
+                        SystemSounds.Hand.Play();
+                        btnUpload.Enabled = true;
+                        btnAPIKey.Enabled = true;
+                        ControlBox = true;
+                        return null;
+                    }
+                }
+            }
+            else
+            {
+                string remoteUrl = txtFilePath.Text.Trim();
+
+                if (Uri.IsWellFormedUriString(remoteUrl, UriKind.Absolute))
+                {
+                    try
+                    {
+                        using (var httpClient = new HttpClient())
+                        {
+                            using (var form = new MultipartFormDataContent())
+                            {
+                                addToLog("Uploading remote file to Freeimage.host using provided API key.");
+                                form.Add(new StringContent(Properties.Settings.Default.apiKey), "key");
+                                form.Add(new StringContent(remoteUrl), "source");
+
+                                var response = await httpClient.PostAsync("https://freeimage.host/api/1/upload", form);
+                                response.EnsureSuccessStatusCode();
+
+                                var responseContent = await response.Content.ReadAsStringAsync();
+
+                                // Parse the JSON response to get the image URL
+                                
+                                dynamic jsonResponse = JsonConvert.DeserializeObject(responseContent);
+                                txtURL.Text = jsonResponse["image"]["url"].ToString();
+
+                                string liveUrl = jsonResponse["image"]["url"].ToString();
+
+                                generatePreview(liveUrl);
+                                addToLog("Upload successful! " + liveUrl);
+                                SystemSounds.Hand.Play();
+                                btnUpload.Enabled = true;
+                                btnAPIKey.Enabled = true;
+                                ControlBox = true;
+                                groupBox1.Text = "Preview (Live on Freeimage.host)";
+                                return imageUrl;
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        SystemSounds.Hand.Play();
+                        btnUpload.Enabled = true;
+                        btnAPIKey.Enabled = true;
+                        ControlBox = true;
+                        addToLog($"Error Uploading Image: {ex.Message}");
+                        return null;
+                    }
                 }
                 else
                 {
-                    addToLog($"Failed to upload file. Status code: {response.StatusCode}");
-                    NarrateAsync("Remote Upload Failed.");
-                    label5.Text = "Failed to generate preview";
                     SystemSounds.Hand.Play();
                     btnUpload.Enabled = true;
                     btnAPIKey.Enabled = true;
                     ControlBox = true;
+                    MessageBox.Show("Please provide a valid URL.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     return null;
                 }
             }
@@ -319,26 +464,10 @@ namespace ImgBB
                         await Task.Run(() => synth.Speak(text));
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     addToLog($"Unable to reach Narrator. {ex.Message}");
                 }
-            }
-        }
-
-        private void chkNarrator_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.useNarrator = chkNarrator.Checked;
-            Properties.Settings.Default.Save();
-
-            if (chkNarrator.Checked)
-            {
-                NarrateAsync($"Hello {Environment.UserName}, Welcome to ImgBB Uploader version {Application.ProductVersion}. Narrator is enabled.");
-                addToLog("Narrator on");
-            }
-            else
-            {
-                addToLog("Narrator off");
             }
         }
 
@@ -503,6 +632,30 @@ namespace ImgBB
             Properties.Settings.Default.Reset();
             Properties.Settings.Default.Save();
             Application.Exit();
+        }
+
+        private void imgBBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.provider = "imgbb";
+            MessageBox.Show("You must provide a new API key.", "Remote Host Changed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            imgBBToolStripMenuItem.Checked = true;
+            freeimagehostToolStripMenuItem.Checked = false;
+            Text = "ImgBB Uploader - " + ProductVersion;
+            Properties.Settings.Default.Save();
+            frmAPIKey key = new frmAPIKey(this);
+            key.ShowDialog();
+        }
+
+        private void freeimagehostToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.provider = "freeimage";
+            MessageBox.Show("You must provide a new API key.", "Remote Host Changed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            imgBBToolStripMenuItem.Checked = false;
+            freeimagehostToolStripMenuItem.Checked = true;
+            Text = "Freeimage.host Uploader - " + ProductVersion;
+            Properties.Settings.Default.Save();
+            frmAPIKey key = new frmAPIKey(this);
+            key.ShowDialog();
         }
     }
 }

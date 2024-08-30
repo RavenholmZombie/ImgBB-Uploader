@@ -58,14 +58,14 @@
             // 
             txtAPIKey.Location = new Point(12, 61);
             txtAPIKey.Name = "txtAPIKey";
-            txtAPIKey.Size = new Size(301, 23);
+            txtAPIKey.Size = new Size(312, 23);
             txtAPIKey.TabIndex = 2;
             txtAPIKey.TextChanged += txtAPIKey_TextChanged;
             // 
             // btnSave
             // 
             btnSave.Enabled = false;
-            btnSave.Location = new Point(238, 100);
+            btnSave.Location = new Point(249, 100);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(75, 23);
             btnSave.TabIndex = 3;
@@ -75,7 +75,7 @@
             // 
             // btnGetKey
             // 
-            btnGetKey.Location = new Point(144, 100);
+            btnGetKey.Location = new Point(155, 100);
             btnGetKey.Name = "btnGetKey";
             btnGetKey.Size = new Size(88, 23);
             btnGetKey.TabIndex = 4;
@@ -97,7 +97,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(321, 131);
+            ClientSize = new Size(336, 135);
             ControlBox = false;
             Controls.Add(button1);
             Controls.Add(btnGetKey);
@@ -112,7 +112,7 @@
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ImgBB API Key";
+            Text = "API Key";
             FormClosing += frmAPIKey_FormClosing;
             Load += frmAPIKey_Load;
             ResumeLayout(false);

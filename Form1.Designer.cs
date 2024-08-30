@@ -42,7 +42,6 @@
             btnAPIKey = new Button();
             radioLocal = new RadioButton();
             radioRemote = new RadioButton();
-            chkNarrator = new CheckBox();
             groupBox1 = new GroupBox();
             label5 = new Label();
             webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
@@ -56,6 +55,9 @@
             logToolStripMenuItem = new ToolStripMenuItem();
             clearToolStripMenuItem = new ToolStripMenuItem();
             saveAsToolStripMenuItem = new ToolStripMenuItem();
+            imageHostToolStripMenuItem = new ToolStripMenuItem();
+            imgBBToolStripMenuItem = new ToolStripMenuItem();
+            freeimagehostToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView21).BeginInit();
             statusStrip1.SuspendLayout();
@@ -193,17 +195,6 @@
             radioRemote.UseVisualStyleBackColor = true;
             radioRemote.CheckedChanged += radioRemote_CheckedChanged;
             // 
-            // chkNarrator
-            // 
-            chkNarrator.AutoSize = true;
-            chkNarrator.Location = new Point(12, 253);
-            chkNarrator.Name = "chkNarrator";
-            chkNarrator.Size = new Size(70, 19);
-            chkNarrator.TabIndex = 13;
-            chkNarrator.Text = "Narrator";
-            chkNarrator.UseVisualStyleBackColor = true;
-            chkNarrator.CheckedChanged += chkNarrator_CheckedChanged;
-            // 
             // groupBox1
             // 
             groupBox1.Controls.Add(label5);
@@ -267,7 +258,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, logToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, logToolStripMenuItem, imageHostToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(821, 24);
@@ -316,6 +307,27 @@
             saveAsToolStripMenuItem.Text = "Save As";
             saveAsToolStripMenuItem.Click += saveAsToolStripMenuItem_Click;
             // 
+            // imageHostToolStripMenuItem
+            // 
+            imageHostToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { imgBBToolStripMenuItem, freeimagehostToolStripMenuItem });
+            imageHostToolStripMenuItem.Name = "imageHostToolStripMenuItem";
+            imageHostToolStripMenuItem.Size = new Size(80, 20);
+            imageHostToolStripMenuItem.Text = "Image Host";
+            // 
+            // imgBBToolStripMenuItem
+            // 
+            imgBBToolStripMenuItem.Name = "imgBBToolStripMenuItem";
+            imgBBToolStripMenuItem.Size = new Size(155, 22);
+            imgBBToolStripMenuItem.Text = "ImgBB";
+            imgBBToolStripMenuItem.Click += imgBBToolStripMenuItem_Click;
+            // 
+            // freeimagehostToolStripMenuItem
+            // 
+            freeimagehostToolStripMenuItem.Name = "freeimagehostToolStripMenuItem";
+            freeimagehostToolStripMenuItem.Size = new Size(155, 22);
+            freeimagehostToolStripMenuItem.Text = "Freeimage.host";
+            freeimagehostToolStripMenuItem.Click += freeimagehostToolStripMenuItem_Click;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -324,7 +336,6 @@
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
             Controls.Add(groupBox1);
-            Controls.Add(chkNarrator);
             Controls.Add(radioRemote);
             Controls.Add(radioLocal);
             Controls.Add(btnAPIKey);
@@ -372,7 +383,6 @@
         private Button btnAPIKey;
         private RadioButton radioLocal;
         private RadioButton radioRemote;
-        private CheckBox chkNarrator;
         private GroupBox groupBox1;
         private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
         private Label label5;
@@ -386,5 +396,8 @@
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem aboutImgBBUploaderToolStripMenuItem;
         private ToolStripMenuItem factoryResetToolStripMenuItem;
+        private ToolStripMenuItem imageHostToolStripMenuItem;
+        private ToolStripMenuItem imgBBToolStripMenuItem;
+        private ToolStripMenuItem freeimagehostToolStripMenuItem;
     }
 }
